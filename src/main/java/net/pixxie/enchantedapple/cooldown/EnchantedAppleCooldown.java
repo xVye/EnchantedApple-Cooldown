@@ -1,12 +1,12 @@
-package com.SirBlobman.enderpearl.cooldown;
+package net.pixxie.enchantedapple.cooldown;
 
 import java.util.List;
 import java.util.logging.Logger;
 
-import com.SirBlobman.enderpearl.cooldown.hook.HookMVdWPlaceholderAPI;
-import com.SirBlobman.enderpearl.cooldown.hook.HookPlaceholderAPI;
-import com.SirBlobman.enderpearl.cooldown.listener.ListenerEnderPearlCooldown;
-import com.SirBlobman.enderpearl.cooldown.task.EnderpearlCooldownTask;
+import net.pixxie.enchantedapple.cooldown.hook.HookMVdWPlaceholderAPI;
+import net.pixxie.enchantedapple.cooldown.hook.HookPlaceholderAPI;
+import net.pixxie.enchantedapple.cooldown.listener.ListenerEnchantedAppleCooldown;
+import net.pixxie.enchantedapple.cooldown.task.EnchantedAppleCooldownTask;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -17,7 +17,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class EnderpearlCooldown extends JavaPlugin {
+public class EnchantedAppleCooldown extends JavaPlugin {
     @Override
     public void onEnable() {
         saveDefaultConfig();
@@ -25,10 +25,10 @@ public class EnderpearlCooldown extends JavaPlugin {
         PluginManager manager = Bukkit.getPluginManager();
         Logger logger = getLogger();
 
-        EnderpearlCooldownTask cooldownTask = new EnderpearlCooldownTask(this);
+        EnchantedAppleCooldownTask cooldownTask = new EnchantedAppleCooldownTask(this);
         cooldownTask.runTaskTimerAsynchronously(this, 0L, 1L);
 
-        Listener listener = new ListenerEnderPearlCooldown(this);
+        Listener listener = new ListenerEnchantedAppleCooldown(this);
         manager.registerEvents(listener, this);
 
         hookIntoMVdWPlaceholderAPI(logger);

@@ -1,18 +1,19 @@
-package com.SirBlobman.enderpearl.cooldown.listener;
+package net.pixxie.enchantedapple.cooldown.listener;
 
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.UUID;
 
-import com.SirBlobman.api.item.ItemUtil;
-import com.SirBlobman.enderpearl.cooldown.EnderpearlCooldown;
-import com.SirBlobman.enderpearl.cooldown.utility.EnderpearlCooldownManager;
+import com.SirBlobman.api.utility.ItemUtil;
+import net.pixxie.enchantedapple.cooldown.EnchantedAppleCooldown;
+import net.pixxie.enchantedapple.cooldown.utility.EnchantedAppleCooldownManager;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event.Result;
@@ -21,34 +22,25 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
 import org.bukkit.scheduler.BukkitScheduler;
 
-public class ListenerEnderPearlCooldown implements Listener {
-    private final EnderpearlCooldown plugin;
-    public ListenerEnderPearlCooldown(EnderpearlCooldown plugin) {
+public class ListenerEnchantedAppleCooldown implements Listener {
+    private final EnchantedAppleCooldown plugin;
+    public ListenerEnchantedAppleCooldown(EnchantedAppleCooldown plugin) {
         this.plugin = plugin;
     }
 
     @EventHandler(priority=EventPriority.HIGHEST)
-    public void beforeLaunch(PlayerInteractEvent e) {
-        Result useHandItem = e.useItemInHand();
-        if(useHandItem == Result.DENY) return;
-
-        Action action = e.getAction();
-        if(action != Action.RIGHT_CLICK_BLOCK && action != Action.RIGHT_CLICK_AIR) return;
-
+    public void beforeLaunch(PlayerItemConsumeEvent e) {
         ItemStack item = e.getItem();
         if(ItemUtil.isAir(item)) return;
 
         Material itemType = item.getType();
-        if(itemType != Material.ENDER_PEARL) return;
-
-        Block block = e.getClickedBlock();
-        if(block != null) {
-            Material blockType = block.getType();
-            if(isBlockIgnored(blockType)) return;
-        }
+        if (itemType != Material.GOLDEN_APPLE) return;
+        if (!item.serialize().containsValue("ENCHANTED_GOLDEN_APPLE")) return;
 
         Player player = e.getPlayer();
         checkCooldown(player, e);
@@ -87,10 +79,10 @@ public class ListenerEnderPearlCooldown implements Listener {
 
     private void checkCooldown(Player player, Cancellable e) {
         if(isWorldIgnored(player)) return;
-        if(EnderpearlCooldownManager.canBypass(player)) return;
+        if(EnchantedAppleCooldownManager.canBypass(player)) return;
         UUID uuid = player.getUniqueId();
 
-        if(EnderpearlCooldownManager.isInCooldown(player)) {
+        if(EnchantedAppleCooldownManager.isInCooldown(player)) {
             e.setCancelled(true);
             sendCooldownMessage(player);
 
@@ -98,7 +90,7 @@ public class ListenerEnderPearlCooldown implements Listener {
             return;
         }
 
-        EnderpearlCooldownManager.addCooldown(player);
+        EnchantedAppleCooldownManager.addCooldown(player);
     }
 
     private void sendCooldownMessage(Player player) {
@@ -107,8 +99,8 @@ public class ListenerEnderPearlCooldown implements Listener {
         String message = this.plugin.getConfigMessage("messages.in-cooldown");
         if(message == null || message.isEmpty()) return;
 
-        long millisLeft = EnderpearlCooldownManager.getTimeLeftMillis(player);
-        long secondsLeft = EnderpearlCooldownManager.getTimeLeftSeconds(player);
+        long millisLeft = EnchantedAppleCooldownManager.getTimeLeftMillis(player);
+        long secondsLeft = EnchantedAppleCooldownManager.getTimeLeftSeconds(player);
 
         String timeLeft = Long.toString(secondsLeft);
         String timeLeftDecimal = getDecimalTimeLeft(millisLeft);

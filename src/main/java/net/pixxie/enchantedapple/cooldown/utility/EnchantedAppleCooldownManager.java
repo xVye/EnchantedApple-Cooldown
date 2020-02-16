@@ -1,20 +1,19 @@
-package com.SirBlobman.enderpearl.cooldown.utility;
+package net.pixxie.enchantedapple.cooldown.utility;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import com.SirBlobman.api.utility.Util;
-import com.SirBlobman.enderpearl.cooldown.EnderpearlCooldown;
+import net.pixxie.enchantedapple.cooldown.EnchantedAppleCooldown;
 
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.EnderPearl;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class EnderpearlCooldownManager {
+public final class EnchantedAppleCooldownManager {
     private static final Map<UUID, Long> cooldownExpireMap = Util.newMap();
 
     public static boolean isInCooldown(Player player) {
@@ -62,20 +61,20 @@ public final class EnderpearlCooldownManager {
     public static boolean canBypass(Player player) {
         if(player == null) return false;
 
-        EnderpearlCooldown plugin = getPlugin();
+        EnchantedAppleCooldown plugin = getPlugin();
         FileConfiguration config = plugin.getConfig();
         if(config == null) return false;
 
         String bypassPermission = config.getString("bypass-permission");
         if(bypassPermission == null || bypassPermission.isEmpty()) return false;
 
-        Permission permission = new Permission(bypassPermission, "Bypass the enderpearl cooldown timer.", PermissionDefault.FALSE);
+        Permission permission = new Permission(bypassPermission, "Bypass the enchantedapple cooldown timer.", PermissionDefault.FALSE);
         return player.hasPermission(permission);
     }
 
 
-    private static EnderpearlCooldown getPlugin() {
-        return JavaPlugin.getPlugin(EnderpearlCooldown.class);
+    private static EnchantedAppleCooldown getPlugin() {
+        return JavaPlugin.getPlugin(EnchantedAppleCooldown.class);
     }
 
     private static List<String> getMatchingPermissions(Player player) {
@@ -87,7 +86,7 @@ public final class EnderpearlCooldownManager {
             if(!effectivePermission.getValue()) continue;
 
             String permission = effectivePermission.getPermission();
-            if(!permission.startsWith("enderpearl.cooldown.timer.")) continue;
+            if(!permission.startsWith("enchantedapple.cooldown.timer.")) continue;
 
             permissionList.add(permission);
         }
@@ -96,7 +95,7 @@ public final class EnderpearlCooldownManager {
     }
 
     private static int getSecondsToAdd(Player player) {
-        EnderpearlCooldown plugin = getPlugin();
+        EnchantedAppleCooldown plugin = getPlugin();
         FileConfiguration config = plugin.getConfig();
         if(config == null) return getNormalSecondsToAdd();
 
@@ -112,7 +111,7 @@ public final class EnderpearlCooldownManager {
 
         int cooldownSeconds = Integer.MAX_VALUE;
         for(String permission : permissionList) {
-            String secondsString = permission.substring("enderpearl.cooldown.timer.".length());
+            String secondsString = permission.substring("enchantedapple.cooldown.timer.".length());
             try {
                 int seconds = Integer.parseInt(secondsString);
                 if(seconds < cooldownSeconds) cooldownSeconds = seconds;
@@ -123,7 +122,7 @@ public final class EnderpearlCooldownManager {
     }
 
     private static int getNormalSecondsToAdd() {
-        EnderpearlCooldown plugin = getPlugin();
+        EnchantedAppleCooldown plugin = getPlugin();
         FileConfiguration config = plugin.getConfig();
         if(config == null) return 0;
 

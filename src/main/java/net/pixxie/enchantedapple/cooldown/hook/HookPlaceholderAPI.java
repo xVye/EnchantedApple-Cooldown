@@ -1,6 +1,6 @@
-package com.SirBlobman.enderpearl.cooldown.hook;
+package net.pixxie.enchantedapple.cooldown.hook;
 
-import com.SirBlobman.enderpearl.cooldown.EnderpearlCooldown;
+import net.pixxie.enchantedapple.cooldown.EnchantedAppleCooldown;
 
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -8,14 +8,14 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
 public class HookPlaceholderAPI extends PlaceholderExpansion implements PlaceholderHook {
-    private final EnderpearlCooldown plugin;
-    public HookPlaceholderAPI(EnderpearlCooldown plugin) {
+    private final EnchantedAppleCooldown plugin;
+    public HookPlaceholderAPI(EnchantedAppleCooldown plugin) {
         this.plugin = plugin;
     }
 
     @Override
     public String getIdentifier() {
-        return "enderpearlcooldown";
+        return "enchantedapplecooldown";
     }
 
     @Override

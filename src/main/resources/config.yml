@@ -42,8 +42,8 @@ cooldown-mode: NORMAL
 # What is the default expire time for the cooldown?
 # The timer is in seconds.
 #
-# Default: 30
-default-timer: 30
+# Default: 300
+default-timer: 300
 
 # If you give a player this permission, they will only have the vanilla cooldown
 # You must explicitly give this permission to a player/group, OPs do not have it by default
@@ -52,16 +52,16 @@ default-timer: 30
 # In 1.9 and above, the vanilla cooldown is about 1 second
 #
 # Default: "enderpearl.cooldown.bypass"
-bypass-permission: "enderpearl.cooldown.bypass"
+bypass-permission: "enchantedapple.cooldown.bypass"
 
 # Set any message to "" or '' to disable it
 # DO NOT blank out messages
 # DO NOT set messages to null
 messages:
-  in-cooldown: "&cYou must wait &a{time_left} seconds&c before using an enderpearl."
-  end-cooldown: "&aYou may now use an ender pearl."
+  in-cooldown: "&cYou must wait &a{time_left} seconds&c before using an enchanted apple."
+  end-cooldown: "&aYou may now use an enchanted apple."
   zero-time-left: "&a&lReady!"
 
   action-bar:
-    timer: "&6&lEnderpearl Cooldown &7\u00BB &c{time_left} seconds."
+    timer: "&6&lEnchanted Apple Cooldown &7\u00BB &c{time_left} seconds."
     end-timer: "&a&lReady!"

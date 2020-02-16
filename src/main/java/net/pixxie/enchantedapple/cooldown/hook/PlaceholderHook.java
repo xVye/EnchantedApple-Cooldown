@@ -1,16 +1,14 @@
-package com.SirBlobman.enderpearl.cooldown.hook;
+package net.pixxie.enchantedapple.cooldown.hook;
 
 import java.text.DecimalFormat;
 
-import com.SirBlobman.enderpearl.cooldown.EnderpearlCooldown;
-import com.SirBlobman.enderpearl.cooldown.utility.EnderpearlCooldownManager;
+import net.pixxie.enchantedapple.cooldown.EnchantedAppleCooldown;
+import net.pixxie.enchantedapple.cooldown.utility.EnchantedAppleCooldownManager;
 
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.EnderPearl;
 import org.bukkit.entity.Player;
 
 public interface PlaceholderHook {
-    default String getPlaceholder(EnderpearlCooldown plugin, Player player, String id) {
+    default String getPlaceholder(EnchantedAppleCooldown plugin, Player player, String id) {
         if(plugin == null || player == null || id == null || id.isEmpty()) return null;
 
         switch(id) {
@@ -21,15 +19,15 @@ public interface PlaceholderHook {
         }
     }
 
-    default String getTimeLeft(EnderpearlCooldown plugin, Player player) {
-        long secondsLeft = EnderpearlCooldownManager.getTimeLeftSeconds(player);
+    default String getTimeLeft(EnchantedAppleCooldown plugin, Player player) {
+        long secondsLeft = EnchantedAppleCooldownManager.getTimeLeftSeconds(player);
         if(secondsLeft <= 0) return getZeroTimeLeft(plugin, player);
 
         return Long.toString(secondsLeft);
     }
 
-    default String getTimeLeftDecimal(EnderpearlCooldown plugin, Player player) {
-        double millisLeft = EnderpearlCooldownManager.getTimeLeftMillis(player);
+    default String getTimeLeftDecimal(EnchantedAppleCooldown plugin, Player player) {
+        double millisLeft = EnchantedAppleCooldownManager.getTimeLeftMillis(player);
         if(millisLeft <= 0) return getZeroTimeLeft(plugin, player);
 
         double secondsLeft = (millisLeft / 1_000.0D);
@@ -38,7 +36,7 @@ public interface PlaceholderHook {
         return format.format(secondsLeft);
     }
 
-    default String getZeroTimeLeft(EnderpearlCooldown plugin, Player player) {
+    default String getZeroTimeLeft(EnchantedAppleCooldown plugin, Player player) {
         String message = plugin.getConfigMessage("messages.zero-time-left");
         return (message == null || message.isEmpty() ? "0" : message);
     }
