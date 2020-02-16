@@ -33,6 +33,24 @@ public class ListenerEnchantedAppleCooldown implements Listener {
         this.plugin = plugin;
     }
 
+    @EventHandler
+    public void checkIfCooldown(PlayerInteractEvent e) {
+        ItemStack item = e.getItem();
+        if (item == null) return;
+
+        Material itemType = item.getType();
+        if (itemType != Material.GOLDEN_APPLE) return;
+        if (!item.serialize().containsValue("ENCHANTED_GOLDEN_APPLE")) return;
+
+        Player player = e.getPlayer();
+        if (player == null) return;
+
+        if (EnchantedAppleCooldownManager.isInCooldown(player)) {
+            e.setCancelled(true);
+            sendCooldownMessage(player);
+        }
+    }
+
     @EventHandler(priority=EventPriority.HIGHEST)
     public void beforeLaunch(PlayerItemConsumeEvent e) {
         ItemStack item = e.getItem();
